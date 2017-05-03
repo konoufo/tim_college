@@ -29,7 +29,7 @@
         <entry file="file://$PROJECT_DIR$/colleges/models.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-505">
-              <caret line="5" column="56" lean-forward="true" selection-start-line="5" selection-start-column="56" selection-end-line="5" selection-end-column="56" />
+              <caret line="5" column="56" lean-forward="false" selection-start-line="5" selection-start-column="56" selection-end-line="5" selection-end-column="56" />
               <folding />
             </state>
           </provider>
@@ -303,7 +303,7 @@
     <entry file="file://$PROJECT_DIR$/colleges/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-505">
-          <caret line="5" column="56" lean-forward="true" selection-start-line="5" selection-start-column="56" selection-end-line="5" selection-end-column="56" />
+          <caret line="5" column="56" lean-forward="false" selection-start-line="5" selection-start-column="56" selection-end-line="5" selection-end-column="56" />
           <folding />
         </state>
       </provider>
