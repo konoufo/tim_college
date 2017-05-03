@@ -1,0 +1,9 @@
+##########
+Tools dependencies
+##########
+.idea/**
+
+##########
+Compiled binaries
+##########
+**.pyc
