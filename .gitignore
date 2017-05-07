@@ -7,3 +7,8 @@ Tools dependencies
 Compiled binaries
 ##########
 **.pyc
+
+##########
+Locale configuration
+##########
+**/local_settings.py
