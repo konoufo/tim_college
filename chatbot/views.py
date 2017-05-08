@@ -1,12 +1,18 @@
-# Create your views here.
 
+from django.shortcuts import render
+from django.views.generic.base import View
 from twilio.rest import Client
 from twilio.twiml.messaging_response import MessagingResponse
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import logging
 
-# Create your views here.
+
+class ChatDemoView(View):
+    def get(self, request):
+        return render(request, 'chatdemo.html')
+
+
 account_sid = "AC2753af86e1e282a4ca4a79d40380e923"
 auth_token = "859f7737020f3c55ddfa7e063a3b8867"
 logger = logging.getLogger(__name__)
