@@ -4,8 +4,8 @@ from django.db import models
 class School(models.Model):
     name = models.CharField(max_length=250)
     type = models.IntegerField(choices=((1, 'university'), (2, 'other')))
-    location = models.CharField(choices=[(1, 'Lusaka')], max_length=99) # states in zambia
-    ownership = models.CharField(choices=[(1, 'private'), (1, 'public')], max_length=10)
+    location = models.IntegerField(choices=((1, 'Lusaka'), (2, 'Ndola'), (3, 'Choma'), (4, 'Chipata'), ))
+    ownership = models.IntegerField(choices=((1, 'private'), (2, 'public'), ))
 
 
 class Scholarship(models.Model):
@@ -28,7 +28,7 @@ class StudyProgram(models.Model):
     school = models.ForeignKey(School, related_name='programs')
     level = models.IntegerField(choices=((1, 'undergraduate'), (2, 'graduate')))
     length = models.IntegerField(help_text='Length of this study program in the selected base unit.')
-    base_time_unit = models.IntegerField(choices=((1, 'semester(s)'),(2, 'year(s)')))
+    base_time_unit = models.IntegerField(choices=((1, 'semester(s)'), (2, 'year(s)')))
 
 
 class FieldCareer(models.Model):

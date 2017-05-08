@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-import chatbot.views as chatviews
+from chatbot.views import inbound, ChatDemoView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^demo/', chatviews.ChatDemoView.as_view(), name='demo'),
+    url(r'^inbound/$', inbound),
+    url(r'^demo/', ChatDemoView.as_view(), name='demo'),
 ]
