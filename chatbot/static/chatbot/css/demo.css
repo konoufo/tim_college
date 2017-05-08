@@ -1,0 +1,104 @@
+/*
+Demo TIM chat service UI Style
+*/
+
+html, body {
+    font-size: 16px;
+}
+
+.container {
+    height: 100%;
+    width: 100%;
+}
+
+.phone {
+    border: 4px solid silver;
+    border-radius: 6px;
+    border-top-width: 12px;
+    height: 100%;
+    margin: 0px auto;
+    max-height: 600px;
+    max-width: 400px;
+    position: relative;
+    overflow:hidden;
+    width: 100%;
+}
+
+.phone.circle {
+    border: 1px solid white;
+    border-radius: 50%;
+    height: 7px;
+    position: relative;
+    top: -8px;
+    width: 7px;
+}
+
+#status {
+    color: black;
+    font-family: Roboto;
+    font-size: 1em;
+    font-weight: 600;
+    height: 10%;
+    text-align: center
+}
+
+#messages {
+    height: 70%;
+    min-height: 250px;
+    min-width: 100%;
+    overflow-y: auto;
+    padding: 4px;
+}
+
+.message-container {
+    margin-bottom: 4px;
+    position: relative;
+    width: 100%;
+}
+
+.message {
+    border-radius: 2px;
+    color: black;
+    padding: 8px;
+    position: relative;
+    width: 50%;
+    word-wrap: break-word;
+}
+
+.message-right {
+    background-color: pink;
+    left:40%;
+}
+
+.message-left {
+    background-color: lightblue;
+}
+
+#textbox {
+    background-color: lightgrey;
+    height: 20%;
+    min-height: 80px;
+    min-width: 100%;
+    max-width: 100%;
+    padding: 2px;
+    text-align:center;
+}
+
+#textbox input, #textbox textarea {
+    display: inline-block;
+    max-width: 300px;
+    padding: 2px;
+    position:relative;
+    top: 13%;
+    width: 80%;
+}
+
+#textbox #sendButton {
+    background-color: #607d8b;
+    border-radius: 3px;
+    color: white;
+    margin-top:8px;
+    max-width: 60px;
+    padding: 2px;
+    width: 20%;
+}

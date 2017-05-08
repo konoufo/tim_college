@@ -4,8 +4,8 @@ from django.db import models
 class School(models.Model):
     name = models.CharField(max_length=250)
     type = models.IntegerField(choices=((1, 'university'), (2, 'other')))
-    location = models.CharField(choices=['']) # states in zambia
-    ownership = models.CharField(choices=['private', 'public'])
+    location = models.CharField(choices=[(1, 'Lusaka')], max_length=99) # states in zambia
+    ownership = models.CharField(choices=[(1, 'private'), (1, 'public')], max_length=10)
 
 
 class Scholarship(models.Model):
@@ -44,6 +44,6 @@ class FieldProgram(models.Model):
 class ProgramTuition(models.Model):
     program = models.ForeignKey(StudyProgram, related_name='tuitions')
     student_category = models.CharField(max_length=250)
-    period = models.CharField()
+    period = models.CharField(max_length=25)
     payments = models.CharField(max_length=999, help_text='List of payments asked each period. (separator: ";")')
-    total = models.CharField(help_text='Total amount to pay for tuition for the entire program.')
+    total = models.IntegerField(help_text='Total amount to pay for tuition for the entire program.')

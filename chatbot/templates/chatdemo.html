@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" style="overflow:hidden; height:100%;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>TIM Demo</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'chatbot/css/demo.css' %}">
+    {% include '_styles.html' %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+</head>
+<body style="overflow:hidden; height:100%;">
+    <div class="container">
+        <div class="phone">
+            <div id="status">
+                TIM Service
+            </div>
+            <div id="messages" data-bind="foreach: messages">
+                <div class="message-container">
+                    <p class="message"
+                       data-bind="text:content, attr: {'class': displayClassName}">
+                    </p>
+                </div>
+            </div>
+            <div id="textbox" data-bind="with: {sender: 'client'}">
+                <textarea name="message" placeholder="Type a message"
+                          data-bind="textInput: $root.messageInput, event: {keypress: $root.onKeypress}"></textarea>
+                <button id="sendButton" data-bind="click: $root.sendMessage">Send</button>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        function Message(content, sender){
+            this.content = content + '';
+            this.sender = sender == 'service' ? sender : 'client';
+            this.displayClassName = ko.computed(function(){
+                return this.sender === 'client' ? 'message message-right' : 'message message-left';
+            }, this);
+        }
+
+        function ConversationViewModel(){
+            var self = this;
+            // Data
+            self.messages = ko.observableArray([]);
+            self.messageInput = ko.observable('');
+            self.clientSendingCount = ko.observable(0);
+
+            // Operations
+            self.sendMessage = function(message){
+                console.log(message);
+                var content = message.content ? message.content() : self.messageInput();
+                if (content){
+                    self.messages.push(new Message(content, message.sender));
+                    if (message.sender == 'client'){
+                        self.messageInput('');
+                        self.mockAnswer();
+                     }
+                }
+
+            };
+
+            self.mockAnswer = function(){
+                var mock = this;
+                if (self.clientSendingCount() == 0){
+                    self.clientSendingCount(self.clientSendingCount() + 1);
+                    var parts = self.messages()[0].content.split(' ');
+                    mock.clientName = parts[parts.length - 1];
+                    console.log(mock.clientName);
+                }
+                var content = function(){return 'Hey ' + mock.clientName + ' ! I\'m TIM. How can i help ?'};
+                self.sendMessage({content: content, sender: 'service'});
+            };
+
+            self.onKeypress = function(message, event){
+                var code = event.keyCode || event.which || event.key;
+                 if (code == 13 && !event.shiftKey){
+                    self.sendMessage(message);
+                 } else {
+                    return true;
+                 }
+            };
+
+        }
+
+        ko.applyBindings(new ConversationViewModel());
+    </script>
+</body>
+</html>
