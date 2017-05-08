@@ -13,6 +13,13 @@ class School(models.Model):
         return self.name + " " + self.get_ownership_display() + " university in " + self.get_location_display()
 
 
+class Faculty(models.Model):
+    name = models.CharField(max_length=250, help_text='Name of Faculty')
+    description = models.CharField(max_length=500, help_text='Description of Faculty')
+    school = models.ForeignKey(School, related_name='faculties')
+    application_info = models.CharField(max_length=1250)
+
+
 class Scholarship(models.Model):
     conditions = models.CharField(max_length=999, help_text='List of conditions for this scholarship. (separator: ";")')
     amount = models.IntegerField(help_text='Amount of money in this scholarship.')
@@ -39,7 +46,8 @@ class Career(models.Model):
 
 class StudyProgram(models.Model):
     name = models.CharField(max_length=250, help_text='Name of this program.')
-    school = models.ForeignKey(School, related_name='programs', help_text='School with this program.')
+    description = models.CharField(max_length=500, blank=True, default='')
+    faculty = models.ForeignKey(Faculty, related_name='programs', help_text='Faculty with this program.')
     level = models.IntegerField(choices=((1, 'undergraduate'), (2, 'graduate')),
                                 help_text='Level of current program.')
     length = models.IntegerField(help_text='Length of this study program in the selected base unit.')
@@ -76,3 +84,16 @@ class ProgramTuition(models.Model):
 
     def __str__(self):
         return "Tuition fees for " + self.program.name + ": " + str(self.total)
+
+
+class FacultyTuition(models.Model):
+    faculty = models.ForeignKey(Faculty, related_name='tuitions',
+                                help_text='university faculty linked to this tuition.')
+    student_category = models.CharField(max_length=250,
+                        help_text='Student category concerned by this tuition (e.g. foreign student, in-state student)')
+    period = models.CharField(max_length=25, help_text='Period for tuition payment (e.g. year, semester)')
+    payments = models.CharField(max_length=999, help_text='List of payments asked each period. (separator: ";")')
+    total = models.IntegerField(help_text='Total amount to pay for tuition for the length of an entire program.')
+
+    def __str__(self):
+        return "Tuition fees for " + self.faculty.name + ": " + str(self.total)
