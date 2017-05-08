@@ -75,6 +75,13 @@ TEMPLATES = [
     },
 ]
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'conversation_cache',
+    }
+}
+
 WSGI_APPLICATION = 'tim.wsgi.application'
 
 

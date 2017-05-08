@@ -1,7 +1,8 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import School, Scholarship, StudyField, Career, StudyProgram, FieldCareer, FieldProgram, ProgramTuition, Faculty, FacultyTuition
+from .models import School, Scholarship, StudyField, Career, StudyProgram, FieldCareer, FieldProgram, ProgramTuition, \
+    Faculty, FacultyTuition
 
 
 class FieldCareerAdmin(admin.ModelAdmin):
