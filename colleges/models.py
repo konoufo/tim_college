@@ -7,20 +7,32 @@ class School(models.Model):
     location = models.CharField(max_length=250, choices=((1, 'Lusaka'), (2, 'Ndola'), (3, 'Choma'), (4, 'Chipata'), ))
     ownership = models.CharField(max_length=250, choices=((1, 'private'), (2, 'public'), ))
 
+    def __str__(self):
+        return self.name
+
 
 class Scholarship(models.Model):
     conditions = models.CharField(max_length=999)
     amount = models.IntegerField()
+
+    def __str__(self):
+        return self.amount
 
 
 class StudyField(models.Model):
     name = models.CharField(max_length=250)
     description = models.CharField(max_length=250)
 
+    def __str__(self):
+        return self.name
+
 
 class Career(models.Model):
     name = models.CharField(max_length=250)
     description = models.CharField(max_length=500)
+
+    def __str__(self):
+        return self.name
 
 
 class StudyProgram(models.Model):
@@ -30,15 +42,24 @@ class StudyProgram(models.Model):
     length = models.IntegerField(help_text='Length of this study program in the selected base unit.')
     base_time_unit = models.IntegerField(choices=((1, 'semester(s)'), (2, 'year(s)')))
 
+    def __str__(self):
+        return self.name
+
 
 class FieldCareer(models.Model):
     career = models.ForeignKey(Career, related_name='fields')
     field = models.ForeignKey(StudyField, related_name='careers')
 
+    def __str__(self):
+        return self.career.name
+
 
 class FieldProgram(models.Model):
     program = models.ForeignKey(StudyProgram, related_name='fields')
     field = models.ForeignKey(StudyField, related_name='programs')
+
+    def __str__(self):
+        return self.program.name
 
 
 class ProgramTuition(models.Model):
@@ -47,3 +68,6 @@ class ProgramTuition(models.Model):
     period = models.CharField(max_length=250)
     payments = models.CharField(max_length=999, help_text='List of payments asked each period. (separator: ";")')
     total = models.CharField(max_length=250, help_text='Total amount to pay for tuition for the entire program.')
+
+    def __str__(self):
+        return self.total
