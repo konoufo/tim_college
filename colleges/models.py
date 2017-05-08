@@ -19,6 +19,9 @@ class Faculty(models.Model):
     school = models.ForeignKey(School, related_name='faculties')
     application_info = models.CharField(max_length=1250)
 
+    def __str__(self):
+        return self.name + " at " + self.school.name
+
 
 class Scholarship(models.Model):
     conditions = models.CharField(max_length=999, help_text='List of conditions for this scholarship. (separator: ";")')
@@ -54,7 +57,7 @@ class StudyProgram(models.Model):
     base_time_unit = models.IntegerField(choices=((1, 'semester(s)'), (2, 'year(s)')))
 
     def __str__(self):
-        return self.name + " at " + self.school.name + " [" + self.get_level_display() + "]"
+        return self.name + " at " + self.faculty.name + " [" + self.get_level_display() + "]"
 
 
 class FieldCareer(models.Model):

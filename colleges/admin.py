@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import School, Scholarship, StudyField, Career, StudyProgram, FieldCareer, FieldProgram, ProgramTuition
+from .models import School, Scholarship, StudyField, Career, StudyProgram, FieldCareer, FieldProgram, ProgramTuition, Faculty, FacultyTuition
 
 
 class FieldCareerAdmin(admin.ModelAdmin):
@@ -70,3 +70,5 @@ admin.site.register(StudyProgram, StudyProgramAdmin)
 admin.site.register(FieldCareer, FieldCareerAdmin)
 admin.site.register(FieldProgram, FieldProgramAdmin)
 admin.site.register(ProgramTuition)
+admin.site.register(Faculty)
+admin.site.register(FacultyTuition)
