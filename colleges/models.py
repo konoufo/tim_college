@@ -8,7 +8,7 @@ class School(models.Model):
     ownership = models.IntegerField(choices=((1, 'private'), (2, 'public'), ))
 
     def __str__(self):
-        return self.name
+        return self.name + " " + self.get_ownership_display() + " university in " + self.get_location_display()
 
 
 class Scholarship(models.Model):
@@ -16,7 +16,7 @@ class Scholarship(models.Model):
     amount = models.IntegerField()
 
     def __str__(self):
-        return self.amount
+        return "Amount available: " + str(self.amount)
 
 
 class StudyField(models.Model):
@@ -43,7 +43,7 @@ class StudyProgram(models.Model):
     base_time_unit = models.IntegerField(choices=((1, 'semester(s)'), (2, 'year(s)')))
 
     def __str__(self):
-        return self.name
+        return self.name + " at " + self.school.name + " [" + self.get_level_display() + "]"
 
 
 class FieldCareer(models.Model):
@@ -69,3 +69,5 @@ class ProgramTuition(models.Model):
     payments = models.CharField(max_length=999, help_text='List of payments asked each period. (separator: ";")')
     total = models.IntegerField(help_text='Total amount to pay for tuition for the entire program.')
 
+    def __str__(self):
+        return "Tuition fees for " + self.program.name + ": " + str(self.total)
