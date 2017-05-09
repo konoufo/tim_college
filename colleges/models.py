@@ -86,7 +86,15 @@ class ProgramTuition(models.Model):
     total = models.IntegerField(help_text='Total amount to pay for tuition for the entire program.')
 
     def __str__(self):
-        return "Tuition fees for " + self.program.name + ": " + str(self.total)
+        return "Tuition fees for " + self.program.name + ": " + str(self.sum_tuitions())
+
+    def sum_tuitions(self):
+        total = 0
+        lst_payment = self.payments.split(';')
+        for payment in lst_payment:
+            total += int(payment)
+        self.total = total
+        return total
 
 
 class FacultyTuition(models.Model):
@@ -96,7 +104,16 @@ class FacultyTuition(models.Model):
                         help_text='Student category concerned by this tuition (e.g. foreign student, in-state student)')
     period = models.CharField(max_length=25, help_text='Period for tuition payment (e.g. year, semester)')
     payments = models.CharField(max_length=999, help_text='List of payments asked each period. (separator: ";")')
-    total = models.IntegerField(help_text='Total amount to pay for tuition for the length of an entire program.')
+    total = models.IntegerField(blank=True, help_text='Total amount to pay for tuition for the length of an entire program.',
+                                default=0)
 
     def __str__(self):
-        return "Tuition fees for " + self.faculty.name + ": " + str(self.total)
+        return "Tuition fees for " + self.faculty.name + ": " + str(self.sum_tuitions())
+
+    def sum_tuitions(self):
+        total = 0
+        lst_payment = self.payments.split(';')
+        for payment in lst_payment:
+            total += int(payment)
+        self.total = total
+        return total

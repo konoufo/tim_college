@@ -63,6 +63,14 @@ class StudyFieldAdmin(admin.ModelAdmin):
         return super(StudyFieldAdmin, self).render_change_form(request, context, *args, **kwargs)
 
 
+class FacultyTuitionAdmin(admin.ModelAdmin):
+    fields = ('faculty', 'student_category', 'payments', 'period')
+
+
+class ProgramTuitionAdmin(admin.ModelAdmin):
+    fields = ('program', 'student_category', 'payments', 'period')
+
+
 admin.site.register(School)
 admin.site.register(Scholarship)
 admin.site.register(StudyField, StudyFieldAdmin)
@@ -70,6 +78,6 @@ admin.site.register(Career)
 admin.site.register(StudyProgram, StudyProgramAdmin)
 admin.site.register(FieldCareer, FieldCareerAdmin)
 admin.site.register(FieldProgram, FieldProgramAdmin)
-admin.site.register(ProgramTuition)
+admin.site.register(ProgramTuition, ProgramTuitionAdmin)
 admin.site.register(Faculty)
-admin.site.register(FacultyTuition)
+admin.site.register(FacultyTuition, FacultyTuitionAdmin)
