@@ -6,6 +6,7 @@ from twilio.twiml.messaging_response import MessagingResponse
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import logging
+from .queries import *
 
 
 class ChatDemoView(View):

@@ -62,7 +62,7 @@ class StudyProgram(models.Model):
 
 class FieldCareer(models.Model):
     career = models.ForeignKey(Career, related_name='fields', help_text='Career linked with field of study.')
-    field = models.ForeignKey(StudyField, related_name='careers', help_text='Field of study linked with program.')
+    field = models.ForeignKey(StudyField, related_name='careers', help_text='Field of study linked with progra2m.')
 
     def __str__(self):
         return self.career.name
@@ -86,7 +86,7 @@ class ProgramTuition(models.Model):
     total = models.IntegerField(help_text='Total amount to pay for tuition for the entire program.')
 
     def __str__(self):
-        return "Tuition fees for " + self.program.name + ": " + str(self.sum_tuitions())
+        return "Tuition fees for " + self.program.name + ": " + str(self.sum_tuitions()) + " Kwacha"
 
     def sum_tuitions(self):
         total = 0
@@ -104,11 +104,11 @@ class FacultyTuition(models.Model):
                         help_text='Student category concerned by this tuition (e.g. foreign student, in-state student)')
     period = models.CharField(max_length=25, help_text='Period for tuition payment (e.g. year, semester)')
     payments = models.CharField(max_length=999, help_text='List of payments asked each period. (separator: ";")')
-    total = models.IntegerField(blank=True, help_text='Total amount to pay for tuition for the length of an entire program.',
-                                default=0)
+    total = models.IntegerField(blank=True, help_text='Total amount to pay for tuition for the length '
+                                                      'of an entire program.', default=0)
 
     def __str__(self):
-        return "Tuition fees for " + self.faculty.name + ": " + str(self.sum_tuitions())
+        return "Tuition fees for " + self.faculty.name + ": " + str(self.sum_tuitions()) + " Kwacha"
 
     def sum_tuitions(self):
         total = 0
