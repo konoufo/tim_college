@@ -26,7 +26,7 @@ def inbound(request):
     conversation = get_current_conversation(user_number)
     try:
         s = get_session(conversation.session_id)
-    except AttributeError:
+    except TypeError:
         s = create_session_with_number(user_number)
         create_conversation(user_number, s.session_key)
     logger.error(user_number)
