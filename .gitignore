@@ -13,3 +13,4 @@ Locale configuration
 ##########
 **/local_settings.py
 **/migrations/
+logs/**
