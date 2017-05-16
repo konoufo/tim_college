@@ -178,7 +178,7 @@ actions = {
 }
 
 client_wit = Wit(access_token=access_token, actions=actions)
-
+# Run with python3 -m chatbot.wit_ai_manager
 if __name__ == "__main__":
     actions.update({'send': send})
     client_wit.interactive()

@@ -4,7 +4,6 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import View
-
 from chatbot.models import get_current_conversation, create_conversation, create_session_with_number, get_session
 from chatbot.wit_ai_manager import client_wit
 
