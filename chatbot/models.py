@@ -47,6 +47,7 @@ def create_session(session_id=None):
         return s
     s = SessionStore()
     s.create()
+    s.set_expiry_date(settings.TIM_ATTENTION_SPAN)
     return s
 
 
@@ -67,8 +68,7 @@ def update_session_with_context(session_id, context):
 
 
 def create_session_with_context(context):
-    s = SessionStore()
-    s.create()
+    s = create_session()
     s['context'].update(context)
     return s
 

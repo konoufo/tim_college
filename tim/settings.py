@@ -176,6 +176,11 @@ LOGGING = {
     }
 }
 
+# TIM is a bot. He keeps contextual information in mind to try and understands humans to the best of his ability
+# This help free some memory so that he doesn't assume the same context for too long.
+
+TIM_ATTENTION_SPAN = 1800
+
 try:
     from tim.local_settings import *
 except:
