@@ -71,3 +71,145 @@ No session with this id.
 {'noName': True}
 +14185807215
 {'name': 'Mohamed', 'noLocation': True}
+104c8710-3a92-11e7-8bcf-083e8edc2144
+No session with this id.
+4db18582-3a92-11e7-9c57-083e8edc2144
+No session with this id.
+6eb20888-3a92-11e7-a095-083e8edc2144
+No session with this id.
+{'noName': True}
+f9e7e7c8-3a92-11e7-bd3b-083e8edc2144
+No session with this id.
+{'noLocation': True, 'name': 'hi'}
+I sent my civilities to a console terminal, *smh*.
+{'noCareer': True, 'name': 'hi', 'location': 'Lusaka'}
+I sent my civilities to a console terminal, *smh*.
+{'career': 'robotics', 'noMoney': True, 'name': 'hi', 'location': 'Lusaka'}
+I sent my civilities to a console terminal, *smh*.
+{'career': 'robotics', 'money': '8500 kwacha', 'location': 'Lusaka', 'name': 'hi'}
+I sent my civilities to a console terminal, *smh*.
+I sent my civilities to a console terminal, *smh*.
+9a235a3a-3a95-11e7-a87b-083e8edc2144
+No session with this id.
+{'name': 'hi', 'noLocation': True}
+I sent my civilities to a console terminal, *smh*.
+{'noCareer': True, 'name': 'hi', 'location': 'lusaka'}
+I can't just keep introducing myself. Remember the name !
+{'noCareer': True, 'name': 'hi', 'location': 'lusaka'}
+I can't just keep introducing myself. Remember the name !
+{'noCareer': True, 'name': 'hi', 'location': 'lusaka'}
+I can't just keep introducing myself. Remember the name !
+{'noCareer': True, 'name': 'hi', 'location': 'lusaka'}
+I can't just keep introducing myself. Remember the name !
+{'name': 'hi', 'career': 'architect', 'noMoney': True, 'location': 'lusaka'}
+I can't just keep introducing myself. Remember the name !
+{'career': 'architect', 'location': 'lusaka', 'name': 'hi', 'money': '2500 kwacha'}
+I can't just keep introducing myself. Remember the name !
+I can't just keep introducing myself. Remember the name !
+f68ff088-3ad5-11e7-9bb7-083e8edc2144
+No session with this id.
+{'name': 'Mohamed', 'noLocation': True}
+I sent my civilities to a console terminal, *smh*.
+{'name': 'Mohamed', 'location': 'Lusaka', 'noCareer': True}
+I can't just keep introducing myself. Remember the name !
+{'noMoney': True, 'name': 'Mohamed', 'career': 'painters', 'location': 'Lusaka'}
+I can't just keep introducing myself. Remember the name !
+{'noMoney': True, 'name': 'Mohamed', 'career': 'painters', 'location': 'Lusaka'}
+I can't just keep introducing myself. Remember the name !
+{'money': '8000 kwacha', 'name': 'Mohamed', 'career': 'painters', 'location': 'Lusaka'}
+I can't just keep introducing myself. Remember the name !
+I can't just keep introducing myself. Remember the name !
+I can't just keep introducing myself. Remember the name !
+49aafce8-3adf-11e7-a7bd-083e8edc2144
+No session with this id.
+{'name': 'Tadiwa', 'noLocation': True}
+I sent my civilities to a console terminal, *smh*.
+<django.contrib.sessions.backends.db.SessionStore object at 0x0000000002D80860>
+{'location': 'Zambia', 'name': 'Tadiwa', 'noCareer': True}
+I can't just keep introducing myself. Remember the name !
+<django.contrib.sessions.backends.db.SessionStore object at 0x00000000045E24A8>
+{'name': 'Tadiwa', 'location': 'Zambia', 'noCareer': True}
+I can't just keep introducing myself. Remember the name !
+<django.contrib.sessions.backends.db.SessionStore object at 0x00000000044D8A20>
+{'location': 'Zambia', 'name': 'Tadiwa', 'noCareer': True}
+I can't just keep introducing myself. Remember the name !
+<django.contrib.sessions.backends.db.SessionStore object at 0x000000000465F438>
+{'name': 'Tadiwa', 'location': 'Zambia', 'noCareer': True}
+I can't just keep introducing myself. Remember the name !
+<django.contrib.sessions.backends.db.SessionStore object at 0x000000000464BDA0>
+{'location': 'Zambia', 'career': 'biology', 'name': 'Tadiwa', 'noMoney': True}
+I can't just keep introducing myself. Remember the name !
+<django.contrib.sessions.backends.db.SessionStore object at 0x000000000464BD30>
+{'location': 'Zambia', 'career': 'biology', 'name': 'Tadiwa', 'money': '3500 kwacha'}
+{'name': 'Tadiwa', 'money': '3500 kwacha', 'location': 'Zambia', 'career': 'biology'}
+I can't just keep introducing myself. Remember the name !
+<django.contrib.sessions.backends.db.SessionStore object at 0x0000000004665C18>
+e774d6c0-3adf-11e7-a62c-083e8edc2144
+No session with this id.
+{'noLocation': True, 'name': 'Tadiwa'}
+I sent my civilities to a console terminal, *smh*.
+f60eb16c-3adf-11e7-a96c-083e8edc2144
+No session with this id.
+{'noLocation': True, 'name': 'tadiwa'}
+I sent my civilities to a console terminal, *smh*.
+resultCount: None, result: None
+dict_items([('hasIntroduced', True)])
+{'location': 'Zambia', 'name': 'tadiwa', 'noCareer': True}
+I can't just keep introducing myself. Remember the name !
+resultCount: None, result: None
+dict_items([('context', {'location': 'Zambia', 'name': 'tadiwa', 'noCareer': True}), ('hasIntroduced', True)])
+{'career': 'Accounting', 'location': 'Zambia', 'name': 'tadiwa', 'noMoney': True}
+I can't just keep introducing myself. Remember the name !
+resultCount: None, result: None
+dict_items([('context', {'name': 'tadiwa', 'location': 'Zambia', 'career': 'Accounting', 'noMoney': True}), ('hasIntroduced', True)])
+{'location': 'Zambia', 'name': 'tadiwa', 'career': 'Accounting', 'money': '2000 kwacha'}
+{'career': 'Accounting', 'money': '2000 kwacha', 'location': 'Zambia', 'name': 'tadiwa'}
+I can't just keep introducing myself. Remember the name !
+resultCount: 2, result: None
+dict_items([('context', {'name': 'tadiwa', 'money': '2000 kwacha', 'location': 'Zambia', 'career': 'Accounting'}), ('resultCount', 2), ('hasIntroduced', True)])
+68eb188c-3ae2-11e7-9cf2-083e8edc2144
+No session with this id.
+{'name': 'tadiwa', 'noLocation': True}
+I sent my civilities to a console terminal, *smh*.
+resultCount: None, result: None
+dict_items([('hasIntroduced', True)])
+{'name': 'tadiwa', 'noCareer': True, 'location': 'Lusaka'}
+I can't just keep introducing myself. Remember the name !
+resultCount: None, result: None
+dict_items([('hasIntroduced', True), ('context', {'name': 'tadiwa', 'noCareer': True, 'location': 'Lusaka'})])
+{'noMoney': True, 'name': 'tadiwa', 'career': 'biologist', 'location': 'Lusaka'}
+I can't just keep introducing myself. Remember the name !
+resultCount: None, result: None
+dict_items([('hasIntroduced', True), ('context', {'noMoney': True, 'career': 'biologist', 'name': 'tadiwa', 'location': 'Lusaka'})])
+{'location': 'Lusaka', 'noMoney': True, 'name': 'tadiwa', 'career': 'biologist'}
+{'location': 'Lusaka', 'noMoney': True, 'name': 'tadiwa', 'career': 'biologist'}
+I can't just keep introducing myself. Remember the name !
+resultCount: None, result: None
+dict_items([('hasIntroduced', True), ('context', {'noMoney': True, 'name': 'tadiwa', 'career': 'biologist', 'location': 'Lusaka'})])
+{'location': 'Lusaka', 'money': '3600 kwacha', 'name': 'tadiwa', 'career': 'biologist'}
+I can't just keep introducing myself. Remember the name !
+resultCount: 1, result: None
+dict_items([('hasIntroduced', True), ('context', {'career': 'biologist', 'name': 'tadiwa', 'result': "You should probably go to UNZA. Though I'm still learning myself, so I'm not sure yet if it's a good advice. I think they offer a few programs in biologist studies.", 'location': 'Lusaka', 'money': '3600 kwacha'}), ('resultCount', 1)])
+ac819198-3ae2-11e7-a752-083e8edc2144
+No session with this id.
+{'noLocation': True, 'name': 'tadiwa'}
+I sent my civilities to a console terminal, *smh*.
+resultCount: None, result: None
+dict_items([('hasIntroduced', True)])
+{'location': 'Lusaka', 'noCareer': True, 'name': 'tadiwa'}
+I can't just keep introducing myself. Remember the name !
+resultCount: None, result: None
+dict_items([('context', {'location': 'Lusaka', 'noCareer': True, 'name': 'tadiwa'}), ('hasIntroduced', True)])
+{'location': 'Lusaka', 'career': 'astronaut', 'noMoney': True, 'name': 'tadiwa'}
+I can't just keep introducing myself. Remember the name !
+resultCount: None, result: None
+dict_items([('context', {'location': 'Lusaka', 'name': 'tadiwa', 'career': 'astronaut', 'noMoney': True}), ('hasIntroduced', True)])
+{'location': 'Lusaka', 'career': 'astronaut', 'money': '3650 kwacha', 'name': 'tadiwa'}
+{'location': 'Lusaka', 'career': 'astronaut', 'money': '3650 kwacha', 'name': 'tadiwa'}
+I can't just keep introducing myself. Remember the name !
+resultCount: 2, result: None
+dict_items([('resultCount', 2), ('context', {'location': 'Lusaka', 'money': '3650 kwacha', 'result': "You should probably go to UNZA. Though I'm still learning myself, so I'm not sure yet if it's a good advice. I think they offer a few programs in astronaut studies.", 'career': 'astronaut', 'name': 'tadiwa'}), ('hasIntroduced', True)])
+{'location': 'Lusaka', 'career': 'no', 'money': '3650 kwacha', 'name': 'tadiwa'}
+I can't just keep introducing myself. Remember the name !
+resultCount: 3, result: None
+dict_items([('resultCount', 3), ('context', {'location': 'Lusaka', 'money': '3650 kwacha', 'result': "You should probably go to UNZA. Though I'm still learning myself, so I'm not sure yet if it's a good advice. I think they offer a few programs in no studies.", 'career': 'no', 'name': 'tadiwa'}), ('hasIntroduced', True)])

@@ -44,10 +44,10 @@ def create_session(session_id=None):
         s = Session(expire_date=timezone.now() + timezone.timedelta(hours=1))
         s.pk = str(session_id)
         s.save()
-        return s
+        return SessionStore(session_key=s.pk)
     s = SessionStore()
     s.create()
-    s.set_expiry_date(settings.TIM_ATTENTION_SPAN)
+    s.set_expiry(settings.TIM_ATTENTION_SPAN)
     return s
 
 
@@ -69,6 +69,7 @@ def update_session_with_context(session_id, context):
 
 def create_session_with_context(context):
     s = create_session()
+    s['context'] = s.get('context', {})
     s['context'].update(context)
     return s
 

@@ -1,0 +1,1 @@
+Hi{% if context.name %} {{context.name}}{% endif %}, my name is TIM. I am here to guide you and specifically help you get into university. Going to University will expand your knowledge, give you more opportunities and increase your chances of getting a good job.

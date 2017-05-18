@@ -2,11 +2,13 @@ import logging
 from collections import OrderedDict
 
 from django.conf import settings
-import django
+from django import setup
+from django.template.loader import render_to_string
 
 from wit import Wit
 from twilio.rest import Client
 
+# when using standalone Interactive Mode, we need to configure Django manually
 if not settings.configured:
     import os, sys
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -16,49 +18,105 @@ if not settings.configured:
     print(settings.DEBUG)
     # Make project directory the current working directory.
     # os.chdir(base_dir)
-    # This is so models get loaded. I don't know why django.setup() is not working.
-    django.setup()
+    setup()
     print('setup done')
-from .models import get_session, update_or_create_with_context, get_current_conversation
+from .models import get_session, create_session, update_or_create_with_context, get_current_conversation
 
 logger = logging.getLogger('chatbot.wit_ai_manager')
 
-# Twilio credentials
+# Twilio
 account_sid = "AC2753af86e1e282a4ca4a79d40380e923"
 auth_token = "859f7737020f3c55ddfa7e063a3b8867"
-
+account_phone = "+14387956005"
+client_twilio = Client(account_sid, auth_token)
 
 # Wit credentials
 access_token = 'HYIAH4DQRFWM65BNI2SNQ2TPAM2ZGV7L'
 
 
-# Wit.ai intent functions
-def send(request, response):
-    print(response['text'])
-
-
-# Sender function to speak to Wit Chatbot over Twilio SMS
-def send_sms(request, response):
-    client_twilio = Client(account_sid, auth_token)
-    try:
-        s = get_session(request['session_id'])
-    except KeyError:
-        print('session_id is missing')
-        return None
-    except IndexError:
-        print('session does not exist')
-        return None
-    except Exception:
-        conv = get_current_conversation(session_id=request['session_id'])
-        s = {'phone_number': conv.phone_number}
+def create_sms(to, body):
     message = client_twilio.messages.create(
-        to=s['phone_number'],
-        from_="+14387956005",
-        body=response['text'])
+        to=to,
+        from_=account_phone,
+        body=body)
     return message
 
 
-# mapping context and entities that influence our Bot decisions
+def send_civilities(s):
+    """ Send a message of introduction when necessary
+    :param s: SessionStore object that contains current conversation
+    :return: message sent if everything goes well. Otherwise `False`.
+    """
+    if s.get('hasIntroduced', None):
+        logger.info('I can\'t just keep introducing myself. Remember the name !')
+        return False
+    s['hasIntroduced'] = True
+    s.save()
+    content = render_to_string('chatbot/civilities.txt', context={'context': s.get('context')})
+    if s.get('phone_number', None) is not None:
+        message = create_sms(s['phone_number'], content)
+        logger.info('I sent my civilities to a phone number *chuckles*.')
+        return message
+    logger.info('I sent my civilities to a console terminal, *smh*.')
+    print(str(content))
+    return content
+
+
+def send_follow_up(s):
+    """ Send a complement to bot answer only when necessary
+    :param s: SessionStore object that contains current conversation
+    :return: message sent if everything goes well. Otherwise `False`.
+    """
+    logger.debug(s.items())
+    if not s.get('resultCount') or not s['context'].get('result'):
+        return False
+    content = render_to_string('chatbot/follow_up.txt', context={'context': s.get('context')})
+    if s.get('phone_number', None) is not None:
+        message = create_sms(s['phone_number'], content)
+        return message
+    print(content)
+    return content
+
+
+def send(request, response):
+    """ Sending bot answers to user in Interactive Mode
+    :param request: a dict object containing the payload from the last chatbot action
+    :param response: a dict object containing the bot answer
+    :return: `None` if everything goes well. `False` otherwise.
+    """
+    try:
+        s = get_session(request['session_id'])
+    except KeyError:
+        logger.error('session_id is missing from request in Interactive Mode. That\'s weird !')
+        return False
+    except Exception:
+        s = create_session(request['session_id'])
+    send_civilities(s)
+    print(response['text'])
+    send_follow_up(s)
+
+
+def send_sms(request, response):
+    """ Sending bot answers to user over Twilio SMS
+        :param request: a dict object containing the payload from the last chatbot action
+        :param response: a dict object containing the bot answer
+        :return: message sent if everything goes well. `False` otherwise.
+    """
+    try:
+        s = get_session(request['session_id'])
+    except KeyError:
+        logger.error('session_id is missing from request.')
+        return False
+    except Exception:
+        conv = get_current_conversation(session_id=request['session_id'])
+        s = conv.renew_session()
+    send_civilities(s)
+    message = create_sms(s['phone_number'], response['text'])
+    send_follow_up(s)
+    return message
+
+
+# map of context and entities which influence our Bot decisions
 factors = OrderedDict([('name', 'contact'), ('location', 'location'), ('career', 'career'),
                        ('money', 'amount_of_money')])
 
@@ -69,6 +127,8 @@ def retrieve_intelligence(request):
 
 
 def first_entity_value(entities, entity):
+    """ Return first value captured for `entity`
+    """
     if entities is None or (entity not in entities):
         return None
     val = entities[entity][0]['value']
@@ -77,7 +137,17 @@ def first_entity_value(entities, entity):
     return val['value'] if isinstance(val, dict) else val
 
 
+def sanitize_post_result(context):
+    """ Sanitize context from unnecessary keys after giving result
+    """
+    context.pop('result', None)
+    return context
+
+
 def sanitize_context(context):
+    """ Sanitize context from unnecessary keys after every action
+    """
+    context = sanitize_post_result(context)
     for resource in factors.keys():
         anti_resource = 'no{}'.format(resource.capitalize())
         if anti_resource in context.keys():
@@ -93,40 +163,65 @@ def can_compute_result(context):
     return True
 
 
-def compute_result(context):
-    return {'result': 'You should probably go to UNZA. Though I\'m still learning myself, so i\'m not sure yet' +
-                      ' if it\'' +
-                      's a godd advice. I think they offer a few programs in {} studies.'.format(context['career']),
-            'name': context.get('name')}
+def compute_result(session):
+    """ Return computed result every time we get all necessary information from user.
+    :param session: current conversation SessionStore object
+    :return: context payload with final result
+    """
+    context = session['context']  # `context` is a shallow copy of `session['context']`
+    session['resultCount'] = session.get('resultCount', 0) + 1
+    context.update({'result': render_to_string('chatbot/results.txt', {'context': context})})
+    session.save()
+    assert session['context'] == context
+    return {'result': context['result'],
+            'name': context['name']}
 
 
 def start_conversation(request):
+    """ Action triggered when entity `contact` is detected in received user message
+    :param request: dict containing current state of conversation
+    :return: new `context` dict
+    """
     context = request['context']
     entities = request['entities']
     session_id = request['session_id']
     name = first_entity_value(entities, 'contact')
     greetings = first_entity_value(entities, 'greetings')
+    s = update_or_create_with_context(session_id, context)
+    context = s['context']
     if name:
         context['name'] = name
         context.pop('noName', None)
     else:
         if context.get('name') is None:
             context['noName'] = True
-    s = update_or_create_with_context(session_id, context)
+    s['context'].update(sanitize_context(context))
     return s['context']
 
 
 def filter_by_location(request):
+    """ Action triggered when intent `filterByLocation` is detected in received user message
+    :param request: dict containing current state of conversation
+    :return: new `context` dict
+    """
     context, entities, session_id = retrieve_intelligence(request)
     location = first_entity_value(entities, 'location')
+    s = update_or_create_with_context(session_id, context)
+    context = s['context']
     if location:
         context['location'] = location
         context.pop('noLocation', None)
-    s = update_or_create_with_context(session_id, context)
+    elif context.get('location', None) is None:
+        context['noLocation'] = True
+    s['context'].update(sanitize_context(context))
     return s['context']
 
 
 def filter_by_tuition(request):
+    """ Action triggered when intent `filterByTuition` is detected in received user message
+    :param request: dict containing current state of conversation
+    :return: new `context` dict
+    """
     context, entities, session_id = retrieve_intelligence(request)
     value = first_entity_value(entities, 'amount_of_money') or first_entity_value(entities, 'zambian_money')
     s = update_or_create_with_context(session_id, context)
@@ -138,14 +233,19 @@ def filter_by_tuition(request):
         context.update({'money': value})
         context.pop('noMoney', None)
     s.save()
+    s['context'].update(sanitize_context(context))
     logger.debug(s['context'])
     assert s['context'] == context
     if can_compute_result(context):
-        return compute_result(context)
+        return compute_result(s)
     return context
 
 
 def find_university(request):
+    """ Action triggered when intent `university` is detected in received user message
+    :param request: dict containing current state of conversation
+    :return: new `context` dict
+    """
     context, entities, session_id = retrieve_intelligence(request)
     s = update_or_create_with_context(session_id, context)
     context = s['context']
@@ -160,12 +260,12 @@ def find_university(request):
                 continue
             context.update({resource: value})
             context.pop('no{}'.format(resource.capitalize()), None)
-    context = sanitize_context(context)
+    s['context'].update(sanitize_context(context))
     logger.debug(context)
     assert s['context'] == context
-    s.save()
     if can_compute_result(context):
-        return compute_result(context)
+        return compute_result(s)
+    s.save()
     return context
 
 
