@@ -50,6 +50,7 @@ class Career(models.Model):
 class StudyProgram(models.Model):
     name = models.CharField(max_length=250, help_text='Name of this program.')
     description = models.CharField(max_length=500, blank=True, default='')
+    admission_requirements = models.CharField(max_length=9999)
     faculty = models.ForeignKey(Faculty, related_name='programs', help_text='Faculty with this program.')
     level = models.IntegerField(choices=((1, 'undergraduate'), (2, 'graduate')),
                                 help_text='Level of current program.')
