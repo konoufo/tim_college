@@ -49,11 +49,10 @@ class Career(models.Model):
 
 class StudyProgram(models.Model):
     name = models.CharField(max_length=250, help_text='Name of this program.')
-    description = models.CharField(max_length=500, blank=True, default='')
-    admission_requirements = models.CharField(max_length=9999)
+    description = models.CharField(max_length=2000, blank=True, default='')
+    admission_requirements = models.CharField(max_length=9999, blank=True, default='')
     faculty = models.ForeignKey(Faculty, related_name='programs', help_text='Faculty with this program.')
-    level = models.IntegerField(choices=((1, 'undergraduate'), (2, 'graduate')),
-                                help_text='Level of current program.')
+    level = models.IntegerField(choices=((1, 'undergraduate'), (2, 'graduate')), help_text='Level of current program.')
     length = models.IntegerField(help_text='Length of this study program in the selected base unit.')
     base_time_unit = models.IntegerField(choices=((1, 'semester(s)'), (2, 'year(s)')))
 
@@ -84,37 +83,42 @@ class ProgramTuition(models.Model):
                         help_text='Student category concerned by this tuition (e.g. foreign student, in-state student)')
     period = models.CharField(max_length=25, help_text='Period for tuition payment (e.g. year, semester)')
     payments = models.CharField(max_length=999, help_text='List of payments asked each period. (separator: ";")')
-    total = models.IntegerField(help_text='Total amount to pay for tuition for the entire program.')
+    total = models.IntegerField(help_text='Total amount to pay for tuition for the program.', blank=True, null=True)
 
     def __str__(self):
         return "Tuition fees for " + self.program.name + ": " + str(self.sum_tuitions()) + " Kwacha"
 
     def sum_tuitions(self):
-        total = 0
-        lst_payment = self.payments.split(';')
-        for payment in lst_payment:
-            total += int(payment)
-        self.total = total
-        return total
+        if self.total is None:
+            lst_payment = [int(p) for p in self.payments.split(';')]
+            self.total = sum(lst_payment)
+        return self.total
+
+    def save(self, *args, **kwargs):
+        self.total = None
+        self.sum_tuitions()
+        return super(ProgramTuition, self).save(*args, **kwargs)
 
 
 class FacultyTuition(models.Model):
-    faculty = models.ForeignKey(Faculty, related_name='tuitions',
-                                help_text='university faculty linked to this tuition.')
+    faculty = models.ForeignKey(Faculty, related_name='tuitions', help_text='university faculty linked to this tuition.')
     student_category = models.CharField(max_length=250,
-                        help_text='Student category concerned by this tuition (e.g. foreign student, in-state student)')
+                       help_text='Student category concerned by this tuition (e.g. foreign student, in-state student)')
     period = models.CharField(max_length=25, help_text='Period for tuition payment (e.g. year, semester)')
     payments = models.CharField(max_length=999, help_text='List of payments asked each period. (separator: ";")')
     total = models.IntegerField(blank=True, help_text='Total amount to pay for tuition for the length '
                                                       'of an entire program.', default=0)
 
     def __str__(self):
-        return "Tuition fees for " + self.faculty.name + ": " + str(self.sum_tuitions()) + " Kwacha"
+        return "Tuition fees for {}: {} Kwacha".format(self.faculty.name, self.sum_tuitions())
 
     def sum_tuitions(self):
-        total = 0
-        lst_payment = self.payments.split(';')
-        for payment in lst_payment:
-            total += int(payment)
-        self.total = total
-        return total
+        if self.total is None:
+            lst_payment = [int(p) for p in self.payments.split(';')]
+            self.total = sum(lst_payment)
+        return self.total
+
+    def save(self, *args, **kwargs):
+        self.total = None
+        self.sum_tuitions()
+        return super(FacultyTuition, self).save(*args, **kwargs)
