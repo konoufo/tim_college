@@ -1,18 +1,25 @@
-##########
+##################
 Tools dependencies
-##########
-.idea/**
+##################
+.idea/
 
-##########
+#################
 Compiled binaries
-##########
-**.pyc
+#################
+**.py[cod]
 
-##########
+####################
 Locale configuration
-##########
+####################
 **/local_settings.py
-**/migrations/
 logs/**
 
-staticfiles
+#############
+Local assets
+#############
+staticroot/**
+
+#########
+DB files
+#########
+*.sqlite3
