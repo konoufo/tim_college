@@ -1,5 +1,11 @@
+# -*- coding:utf-8 -*-
 # Query functions
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from colleges import models
+
+
+def empty_queryset():
+    return models.StudyProgram.objects.none()
 
 
 def get_all_schools():
@@ -12,6 +18,12 @@ def find_schools_by_region(region):
 
 def find_school_by_name(name):
     return models.School.objects.get(name=name)
+
+
+def find_study_program_by_search(query):
+    vector = SearchVector('name', weight='Α') + SearchVector('description', weight='C')
+    tsquery = SearchQuery(query)
+    return models.StudyProgram.objects.annotate(rank=SearchRank(vector, tsquery)).order_by('-rank')
 
 
 def find_study_programs_by_faculty(faculty):
@@ -37,9 +49,8 @@ def find_faculties_by_school(school):
 def find_faculty_by_name(name):
     return models.Faculty.objects.get(name=name)
 
+
 # TODO: Add scholarship field in program model
-
-
 def is_scholarship_available():
     return
 
@@ -66,4 +77,3 @@ def find_career_by_name(name):
 
 def find_career_by_study_field(study_field):
     return models.FieldCareer.objects.filter(field=study_field)
-

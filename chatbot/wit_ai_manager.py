@@ -1,3 +1,17 @@
+# -*- coding: utf-8 -*-
+"""Wit.ai powered bot, TIM, capabilities
+
+This module handles communication between incoming users and our wit.ai powered bot.
+It contains methods that generate answers based off entities extracted from incoming messages.
+These methods enable TIM to greet, ask for more information or deliver an orientation advice to the user
+depending on the context.
+
+Attributes:
+    factors (OrderedDict): map of context (keys), we need, to entities (values), we extract.
+    filters (dict): map of context (keys) to filtering methods (values) we apply to compute a definitive set
+        of matching university programs.
+"""
+
 import logging
 from collections import OrderedDict
 
@@ -21,6 +35,7 @@ if not settings.configured:
     setup()
     print('setup done')
 from .models import get_session, create_session, update_or_create_with_context, get_current_conversation
+from .queries import find_study_program_by_search, empty_queryset
 
 logger = logging.getLogger('chatbot.wit_ai_manager')
 
@@ -107,7 +122,7 @@ def send_sms(request, response):
     except KeyError:
         logger.error('session_id is missing from request.')
         return False
-    except Exception:
+    else:
         conv = get_current_conversation(session_id=request['session_id'])
         s = conv.renew_session()
     send_civilities(s)
@@ -116,9 +131,12 @@ def send_sms(request, response):
     return message
 
 
-# map of context and entities which influence our Bot decisions
 factors = OrderedDict([('name', 'contact'), ('location', 'location'), ('career', 'career'),
                        ('money', 'amount_of_money')])
+
+filters = {
+    'career': find_study_program_by_search
+}
 
 
 def retrieve_intelligence(request):
@@ -135,6 +153,42 @@ def first_entity_value(entities, entity):
     if not val:
         return None
     return val['value'] if isinstance(val, dict) else val
+
+
+def filter_outcomes(session):
+    """Filtrer les possibilités (programmes universitaires) qui correspondent aux données de la conversation
+
+    Args:
+        session (SessionStore) : contient toutes les données sur la conversation
+
+    Returns:
+        SessionStore: `session`. With resulting queryset in `session['queryset']`.
+    """
+    queryset = None
+    for resource in factors.keys():
+        try:
+            queryset.filter(filters[resource](session['context'][resource]))
+        except AttributeError:
+            queryset = filters[resource](session['context'][resource])
+        except KeyError:
+            continue
+    session['queryset'] = queryset or empty_queryset()
+    return session
+
+
+def renew_context(context, entities):
+    for resource, entity in factors.items():
+        value = first_entity_value(entities, entity)
+        if value is None:
+            if context.get(resource, None) is None:
+                context['no{}'.format(resource.capitalize())] = True
+                break
+        else:
+            if resource == 'name' and context.get('name', None) is not None:
+                continue
+            context.update({resource: value})
+            context.pop('no{}'.format(resource.capitalize()), None)
+    return context
 
 
 def sanitize_post_result(context):
@@ -165,7 +219,7 @@ def can_compute_result(context):
 
 def compute_result(session):
     """ Return computed result every time we get all necessary information from user.
-    :param session: current conversation SessionStore object
+    :param SessionStore session: current conversation SessionStore object
     :return: context payload with final result
     """
     context = session['context']  # `context` is a shallow copy of `session['context']`
@@ -179,8 +233,8 @@ def compute_result(session):
 
 def start_conversation(request):
     """ Action triggered when entity `contact` is detected in received user message
-    :param request: dict containing current state of conversation
-    :return: new `context` dict
+    :param dict request: contains current state of conversation as received from wit.ai
+    :return: renewed `context` dict
     """
     context = request['context']
     entities = request['entities']
@@ -201,8 +255,8 @@ def start_conversation(request):
 
 def filter_by_location(request):
     """ Action triggered when intent `filterByLocation` is detected in received user message
-    :param request: dict containing current state of conversation
-    :return: new `context` dict
+    :param dict request: contains current state of conversation
+    :return: renewed `context` dict
     """
     context, entities, session_id = retrieve_intelligence(request)
     location = first_entity_value(entities, 'location')
@@ -219,7 +273,7 @@ def filter_by_location(request):
 
 def filter_by_tuition(request):
     """ Action triggered when intent `filterByTuition` is detected in received user message
-    :param request: dict containing current state of conversation
+    :param dict request: contains current state of conversation
     :return: new `context` dict
     """
     context, entities, session_id = retrieve_intelligence(request)
@@ -243,29 +297,18 @@ def filter_by_tuition(request):
 
 def find_university(request):
     """ Action triggered when intent `university` is detected in received user message
-    :param request: dict containing current state of conversation
-    :return: new `context` dict
+    :param dict request: contains current state of conversation
+    :return dict context: renewed `context`
     """
     context, entities, session_id = retrieve_intelligence(request)
     s = update_or_create_with_context(session_id, context)
-    context = s['context']
-    for resource, entity in factors.items():
-        value = first_entity_value(entities, entity)
-        if value is None:
-            if context.get(resource, None) is None:
-                context['no{}'.format(resource.capitalize())] = True
-                break
-        else:
-            if resource == 'name' and context.get('name', None) is not None:
-                continue
-            context.update({resource: value})
-            context.pop('no{}'.format(resource.capitalize()), None)
-    s['context'].update(sanitize_context(context))
+    context = sanitize_context(renew_context(s['context'], entities))
     logger.debug(context)
     assert s['context'] == context
+    filter_outcomes(s).save()
+    # filter_outcomes(s) -> s['queryset'} = Q(location) & Q(career, tuition)
     if can_compute_result(context):
         return compute_result(s)
-    s.save()
     return context
 
 

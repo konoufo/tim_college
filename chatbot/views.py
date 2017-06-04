@@ -22,7 +22,7 @@ def inbound(request):
     user_number = request.POST.get('From', None)
     conversation = get_current_conversation(phone_number=user_number)
     try:
-        logger.debug(user_number)
+        logger.debug('incoming phone number: ' + user_number)
         if conversation.has_expired():
             conversation.renew_session()
         s = get_session(conversation.session_id)
@@ -33,4 +33,4 @@ def inbound(request):
     s['context'] = s.get('context', {})
     s['context'].update(client_wit.run_actions(session_id, message, s['context']))
     s.save()
-    return HttpResponse('')
+    return HttpResponse('Message received: «{}»'.format(message))

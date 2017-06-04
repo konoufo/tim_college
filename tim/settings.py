@@ -158,6 +158,15 @@ STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
+    'formatters': {
+            'verbose': {
+                'format': "[%(asctime)s] %(levelname)s [%(pathname)s:%(lineno)s] %(message)s",
+                'datefmt': "%d/%b/%Y %H:%M:%S"
+            },
+            'simple': {
+                'format': '%(levelname)s %(message)s'
+            },
+    },
     "filters": {
         "require_debug_false": {
             "()": "django.utils.log.RequireDebugFalse"
@@ -174,7 +183,13 @@ LOGGING = {
             "class": "logging.handlers.RotatingFileHandler",
             "filename": os.path.join(BASE_DIR, "logs", "chatbot.log"),
             "maxBytes": 1024*1024*15,  # 15 MB
-            "backupCount": 10
+            "backupCount": 10,
+            "formatter": "verbose"
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
         }
     },
     "loggers": {
@@ -190,10 +205,10 @@ LOGGING = {
     }
 }
 
-# TIM is a bot. He keeps contextual information in mind to try and understands humans to the best of his ability
-# This help free some memory so that he doesn't assume the same context for too long.
+# TIM is a bot. It keeps contextual information in mind to try and understands humans to the best of its ability.
+# We need a maximum attention span to help freeing its memory so that it doesn't assume the same context for too long.
 
-TIM_ATTENTION_SPAN = 1800
+TIM_ATTENTION_SPAN = 1800  # time in seconds
 
 try:
     from tim.local_settings import *
