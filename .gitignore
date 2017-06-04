@@ -13,6 +13,7 @@ Locale configuration
 ####################
 **/local_settings.py
 logs/**
+**migrations/[^_]*.py
 
 #############
 Local assets

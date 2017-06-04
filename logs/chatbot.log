@@ -213,3 +213,19 @@ dict_items([('resultCount', 2), ('context', {'location': 'Lusaka', 'money': '365
 I can't just keep introducing myself. Remember the name !
 resultCount: 3, result: None
 dict_items([('resultCount', 3), ('context', {'location': 'Lusaka', 'money': '3650 kwacha', 'result': "You should probably go to UNZA. Though I'm still learning myself, so I'm not sure yet if it's a good advice. I think they offer a few programs in no studies.", 'career': 'no', 'name': 'tadiwa'}), ('hasIntroduced', True)])
+[04/Jun/2017 12:32:09] ERROR [C:\Users\konoufo\Downloads\thekeep\Jobs\projects\tim\chatbot\models.py:81] 4facd552-4943-11e7-bbeb-083e8edc2144
+[04/Jun/2017 12:32:09] ERROR [C:\Users\konoufo\Downloads\thekeep\Jobs\projects\tim\chatbot\models.py:82] No session with this id.
+[04/Jun/2017 12:32:09] DEBUG [C:\Users\konoufo\Downloads\thekeep\Jobs\projects\tim\chatbot\wit_ai_manager.py:243] {'noLocation': True, 'name': 'Hello'}
+[04/Jun/2017 12:39:58] ERROR [C:\Users\konoufo\Downloads\thekeep\Jobs\projects\tim\chatbot\models.py:81] 5dc4313e-4944-11e7-a81f-083e8edc2144
+[04/Jun/2017 12:39:58] ERROR [C:\Users\konoufo\Downloads\thekeep\Jobs\projects\tim\chatbot\models.py:82] No session with this id.
+[04/Jun/2017 12:39:58] DEBUG [C:\Users\konoufo\Downloads\thekeep\Jobs\projects\tim\chatbot\wit_ai_manager.py:245] {'noLocation': True, 'name': 'hello'}
+[04/Jun/2017 15:23:01] ERROR [C:\Users\konoufo\Downloads\thekeep\Jobs\projects\tim\chatbot\models.py:81] 36db54ba-495b-11e7-8f83-083e8edc2144
+[04/Jun/2017 15:23:01] ERROR [C:\Users\konoufo\Downloads\thekeep\Jobs\projects\tim\chatbot\models.py:82] No session with this id.
+[04/Jun/2017 15:23:01] DEBUG [C:\Users\konoufo\Downloads\thekeep\Jobs\projects\tim\chatbot\wit_ai_manager.py:245] {'noLocation': True, 'name': 'hello'}
+[04/Jun/2017 15:23:44] ERROR [C:\Users\konoufo\Downloads\thekeep\Jobs\projects\tim\chatbot\models.py:81] 50a3709e-495b-11e7-ba8a-083e8edc2144
+[04/Jun/2017 15:23:44] ERROR [C:\Users\konoufo\Downloads\thekeep\Jobs\projects\tim\chatbot\models.py:82] No session with this id.
+[04/Jun/2017 15:23:44] DEBUG [C:\Users\konoufo\Downloads\thekeep\Jobs\projects\tim\chatbot\wit_ai_manager.py:245] {'name': 'hello', 'noLocation': True}
+[04/Jun/2017 15:23:46] INFO [C:\Users\konoufo\Downloads\thekeep\Jobs\projects\tim\chatbot\wit_ai_manager.py:75] I sent my civilities to a console terminal, *smh*.
+[04/Jun/2017 15:23:46] DEBUG [C:\Users\konoufo\Downloads\thekeep\Jobs\projects\tim\chatbot\wit_ai_manager.py:85] dict_items([('hasIntroduced', True)])
+[04/Jun/2017 15:25:41] INFO [C:\Users\konoufo\Downloads\thekeep\Jobs\projects\tim\chatbot\wit_ai_manager.py:66] I can't just keep introducing myself. Remember the name !
+[04/Jun/2017 15:25:41] DEBUG [C:\Users\konoufo\Downloads\thekeep\Jobs\projects\tim\chatbot\wit_ai_manager.py:85] dict_items([('hasIntroduced', True)])
