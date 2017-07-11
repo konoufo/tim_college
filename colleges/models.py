@@ -1,13 +1,32 @@
 from django.db import models
 
 
+class Requirement(models.Model):
+    """Describe a requirement for anything e.g. schools, scholarships etc.
+    This is the parent class of all *Requirement models.
+    Attributes:
+        name (str): title of requirement (Optional)
+        description (str): explanation of requirement (Optional)
+    """
+    name = models.CharField(max_length=999, blank=True, null=True)
+    description = models.CharField(max_length=999, blank=True, null=True)
+
+    @staticmethod
+    def get_type():
+        return 'Requirement'
+
+    def __str__(self):
+        return self.name or '{} #{}'.format(self.get_type(), self.pk or 'N/A')
+
+
 class School(models.Model):
     name = models.CharField(max_length=250, help_text='Name of Institution')
     type = models.IntegerField(choices=((1, 'university'), (2, 'other')), help_text='Type of institution.')
-    location = models.IntegerField(choices=((1, 'Lusaka'), (2, 'Ndola'), (3, 'Choma'), (4, 'Chipata'), ),
+    location = models.IntegerField(choices=((1, 'Lusaka'), (2, 'Ndola'), (3, 'Choma'), (4, 'Chipata'), (5, 'Kwabe')),
                                    help_text='State location of this school.')
     ownership = models.IntegerField(choices=((1, 'private'), (2, 'public'), ),
                                     help_text='Is it a private school or a public school ?')
+    application_info = models.CharField(max_length=9999, help_text="How to apply ?", null=True, blank=True)
 
     def __str__(self):
         return self.name + " " + self.get_ownership_display() + " university in " + self.get_location_display()
@@ -15,25 +34,37 @@ class School(models.Model):
 
 class Faculty(models.Model):
     name = models.CharField(max_length=250, help_text='Name of Faculty')
-    description = models.CharField(max_length=500, help_text='Description of Faculty')
+    description = models.CharField(max_length=500, help_text='Description of Faculty', blank=True, null=True)
     school = models.ForeignKey(School, related_name='faculties')
-    application_info = models.CharField(max_length=1250)
+    application_info = models.CharField(max_length=1250, help_text="How to apply ?", null=True, blank=True)
 
     def __str__(self):
         return self.name + " at " + self.school.name
 
 
 class Scholarship(models.Model):
-    conditions = models.CharField(max_length=999, help_text='List of conditions for this scholarship. (separator: ";")')
-    amount = models.IntegerField(help_text='Amount of money in this scholarship.')
+    name = models.CharField(max_length=999, null=True)
+    description = models.CharField(max_length=999, blank=True, null=True)
+    conditions = models.CharField(max_length=999, help_text='Use Requirements instead. Will be REMOVED.',
+                                  null=True, blank=True)
+    amount = models.IntegerField(help_text='Amount of money in this scholarship (kwacha).', blank=True, null=True)
 
     def __str__(self):
-        return "Amount available: " + str(self.amount)
+        return "{} <amount: {}>".format(self.name or 'Scholarship', self.amount)
+
+
+class ScholarshipRequirement(Requirement):
+    scholarship = models.ForeignKey(Scholarship, on_delete=models.CASCADE)
+
+    @staticmethod
+    def get_type():
+        return 'Scholarship Requirement'
 
 
 class StudyField(models.Model):
     name = models.CharField(max_length=250,  help_text='Name of this field of study.')
-    description = models.CharField(max_length=250, help_text='Description of this field of study.')
+    description = models.CharField(max_length=250, help_text='Description of this field of study.', null=True,
+                                   blank=True)
 
     def __str__(self):
         return self.name
@@ -41,7 +72,7 @@ class StudyField(models.Model):
 
 class Career(models.Model):
     name = models.CharField(max_length=250, help_text='Name of this career')
-    description = models.CharField(max_length=500, help_text='Description of this career')
+    description = models.CharField(max_length=500, help_text='Description of this career', null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -80,7 +111,7 @@ class ProgramTuition(models.Model):
     program = models.ForeignKey(StudyProgram, related_name='tuitions',
                                 help_text='university program linked to this tuition.')
     student_category = models.CharField(max_length=250,
-                        help_text='Student category concerned by this tuition (e.g. foreign student, in-state student)')
+                        help_text='Student category targeted by this tuition (e.g. foreign student, in-state student)')
     period = models.CharField(max_length=25, help_text='Period for tuition payment (e.g. year, semester)')
     payments = models.CharField(max_length=999, help_text='List of payments asked each period. (separator: ";")')
     total = models.IntegerField(help_text='Total amount to pay for tuition for the program.', blank=True, null=True)

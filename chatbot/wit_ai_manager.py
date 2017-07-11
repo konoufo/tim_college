@@ -247,6 +247,14 @@ def retrieve_session(request, resource=None):
 
 
 def can_compute_result(context):
+    """Check if we have enough information to generate a final result
+
+    Args:
+        context:
+
+    Returns:
+
+    """
     for resource in factors.keys():
         if 'no{}'.format(resource.capitalize()) in context.keys():
             return False
@@ -256,7 +264,7 @@ def can_compute_result(context):
 def compute_result(session):
     """ Return computed result every time we get all necessary information from user.
     :param SessionStore session: current conversation SessionStore object
-    :return: context payload with final result
+    :return: context payload to pass to wit.ai to generate final result message
     """
     context = session['context']  # `context` is a shallow copy of `session['context']`
     session['resultCount'] = session.get('resultCount', 0) + 1

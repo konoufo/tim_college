@@ -1,1 +1,8 @@
-You should probably go to UNZA. Though I'm still learning myself, so I'm not sure yet if it's a good advice. I think they offer a few programs in {{context.career}} studies.
+{% if context.queryset %}
+You should probably go to UNZA. These study programs match what you like:
+ {% for p in context.queryset %}
+- {{p}}
+ {% endfor %}
+{% else %}
+I can't find study programs that match what you like.
+{% endif %}

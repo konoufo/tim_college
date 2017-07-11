@@ -1,10 +1,18 @@
 from django.contrib import admin
 
-# Register your models here.
-from .models import School, Scholarship, StudyField, Career, StudyProgram, FieldCareer, FieldProgram, ProgramTuition, \
-    Faculty, FacultyTuition
+from colleges import models
 
 
+class ScholarshipRequirementAdminInline(admin.StackedInline):
+    model = models.ScholarshipRequirement
+
+
+class ScholarshipAdmin(admin.ModelAdmin):
+    inlines = [
+        ScholarshipRequirementAdminInline
+    ]
+
+    
 class FieldCareerAdmin(admin.ModelAdmin):
     def render_change_form(self, request, context, *args, **kwargs):
         # here we define a custom template
@@ -71,13 +79,13 @@ class ProgramTuitionAdmin(admin.ModelAdmin):
     fields = ('program', 'student_category', 'payments', 'period')
 
 
-admin.site.register(School)
-admin.site.register(Scholarship)
-admin.site.register(StudyField, StudyFieldAdmin)
-admin.site.register(Career)
-admin.site.register(StudyProgram, StudyProgramAdmin)
-admin.site.register(FieldCareer, FieldCareerAdmin)
-admin.site.register(FieldProgram, FieldProgramAdmin)
-admin.site.register(ProgramTuition, ProgramTuitionAdmin)
-admin.site.register(Faculty)
-admin.site.register(FacultyTuition, FacultyTuitionAdmin)
+admin.site.register(models.School)
+admin.site.register(models.Scholarship, ScholarshipAdmin)
+admin.site.register(models.StudyField, StudyFieldAdmin)
+admin.site.register(models.Career)
+admin.site.register(models.StudyProgram, StudyProgramAdmin)
+admin.site.register(models.FieldCareer, FieldCareerAdmin)
+admin.site.register(models.FieldProgram, FieldProgramAdmin)
+admin.site.register(models.ProgramTuition, ProgramTuitionAdmin)
+admin.site.register(models.Faculty)
+admin.site.register(models.FacultyTuition, FacultyTuitionAdmin)
