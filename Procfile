@@ -1,1 +1,2 @@
-web: gunicorn tim.wsgi
+release: ./release.sh
+web: gunicorn tim.wsgi --log-file -

@@ -19,6 +19,7 @@ logs/**
 Local assets
 #############
 staticroot/**
+staticfiles/**
 
 #########
 DB files
