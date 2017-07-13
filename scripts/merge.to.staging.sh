@@ -1,2 +1,1 @@
-git checkout staging
-git merge master && git reset HEAD */migrations/** && git checkout -f */migrations/**
+git checkout staging && (git merge master && git reset HEAD^ */migrations/** || git reset HEAD */migrations/** && git checkout -f */migrations/**)

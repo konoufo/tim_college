@@ -1,0 +1,1 @@
+./merge.to.staging && python ../manage.py makemigrations && (git add -A & git commit -am"committing migrations before deployment" & git push heroku HEAD:master && echo :D) || echo "Deployment failed. Check for merge issues or server status."
